@@ -63,6 +63,7 @@ What happens:
 - Increase `n_collocation` and epochs for better accuracy, but expect longer runtimes.
 
 ### Next Steps
+
 - Add autograd-based gradients to speed up training.
 - Implement additional PDEs in `physics/` and configurable boundary types.
 - Log metrics/plots to disk and add unit tests for residuals and derivatives.
