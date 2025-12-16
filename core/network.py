@@ -43,3 +43,41 @@ class NeuralField:
         u_xx = self.W[-1] @ d2A_dxx
 
         return u, u_x, u_t, u_xx
+
+
+def forward_ode(x, params):
+    """
+    Forward pass for 1D ODE neural network.
+    
+    Args:
+        x: Input of shape (1, n)
+        params: List [w, b, v] where:
+            w: (n_hidden, 1)
+            b: (n_hidden, 1)
+            v: (1, n_hidden)
+    
+    Returns:
+        y: Output of shape (1, n)
+        y_x: Derivative of y w.r.t. x, shape (1, n)
+        z: Intermediate value w*x + b, shape (n_hidden, n)
+        h: tanh(z), shape (n_hidden, n)
+        sp: d_tanh(z), shape (n_hidden, n)
+    """
+    w, b, v = params
+    
+    # z = w @ x + b, broadcasting b to match
+    z = w @ x + b  # (n_hidden, 1) @ (1, n) + (n_hidden, 1) -> (n_hidden, n)
+    
+    # h = tanh(z)
+    h = tanh(z)
+    
+    # sp = d_tanh(z)
+    sp = d_tanh(z)
+    
+    # y = v @ h
+    y = v @ h  # (1, n_hidden) @ (n_hidden, n) -> (1, n)
+    
+    # y_x = v @ (sp * w), where w broadcasts
+    y_x = v @ (sp * w)  # (1, n_hidden) @ ((n_hidden, n) * (n_hidden, 1)) -> (1, n)
+    
+    return y, y_x, z, h, sp
