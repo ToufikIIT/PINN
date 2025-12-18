@@ -7,22 +7,22 @@ from physics.burgers_1d import Burgers1D
 from utils.sampling import sample_collocation
 
 np.random.seed(0)
-model = NeuralField([2, 20, 20, 1])        
-optimizer = SGD_Momentum(model.params(),lr=1e-4,gamma=0.9)
+model = NeuralField([2, 5, 1])        
+optimizer = SGD_Momentum(model.params(),lr=1e-3,gamma=0.9)
 pde = Burgers1D(nu=0.01)
 def initial_condition(x):
     return -np.sin(np.pi * x)
 
-trainer = PINNTrainer(model=model,pde=pde,optimizer=optimizer,ic_func=initial_condition,bc_func=None,ic_weight=20.0,bc_weight=20.0)
-epochs = 3000
-n_collocation = 50
+trainer = PINNTrainer(model=model,pde=pde,optimizer=optimizer,ic_func=initial_condition,bc_func=None,ic_weight=30.0,bc_weight=10.0)
+epochs = 10000
+n_collocation = 100
 
 print("\nStarting training...\n")
 
 for epoch in range(epochs):
     Xf = sample_collocation(n_collocation, (0, 1), (0, 1))
     loss = trainer.step(Xf)
-    if epoch % 200 == 0:
+    if epoch % 1000 == 0:
         print(f"Epoch {epoch:4d} | Loss = {loss:.6e}")
 print("\nTraining finished.\n")
 

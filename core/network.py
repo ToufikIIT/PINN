@@ -22,6 +22,7 @@ class NeuralField:
 
         for i in range(len(self.W)-1):
             Z = self.W[i] @ A + self.b[i]
+            
             sp = d_tanh(Z)
             spp = dd_tanh(Z)
 
@@ -43,7 +44,6 @@ class NeuralField:
         u_xx = self.W[-1] @ d2A_dxx
 
         return u, u_x, u_t, u_xx
-
 
 def forward_ode(x, params):
     w, b, v = params

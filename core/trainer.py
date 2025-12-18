@@ -1,9 +1,7 @@
 import numpy as np
 
 class PINNTrainer:
-    def __init__(self, model, pde, optimizer,
-                 ic_func, bc_func,
-                 ic_weight=10.0, bc_weight=10.0):
+    def __init__(self, model, pde, optimizer,ic_func, bc_func,ic_weight=50.0, bc_weight=10.0):
         self.model = model
         self.pde = pde
         self.opt = optimizer
